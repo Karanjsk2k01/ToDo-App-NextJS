@@ -68,7 +68,7 @@ export default function ({id,title,description,date})
         className='border-slate-500 px-6 py-4'
         required
       />
-      <button type="submit"className="text-white bg-green-600 font-bold p-2 max-w-fit rounded-md">Update Topic</button>
+      <button type="submit"className="text-white bg-green-600 font-bold p-2 max-w-fit rounded-md">Update List</button>
     </form>
 
     ) 
