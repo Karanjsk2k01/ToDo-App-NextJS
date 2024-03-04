@@ -22,7 +22,7 @@ const TopicsList = ({ List }) => {
           throw new Error('Failed to delete')
       }     
       
-      setCompletedItems(...completedItems,id)
+      setCompletedItems([...completedItems,id])
 
 
     } catch (error) {
@@ -35,15 +35,9 @@ const TopicsList = ({ List }) => {
     <>
       {List.map((item) => (
         <div className="py-5 border-slate-300 shadow px-5 flex justify-between gap-5" key={item._id.toString()}>
-          {completedItems.includes(item._id.toString()) ?
-              (<div></div>) :
-              (
-              <div className="flex items-center hover:ease-linear" onClick={(e) => deleteCompletedList(e, item._id.toString())} >
-                <FaFileCircleCheck size={25} className="text-green-500 hover:scale-110 transition duration-300" />
-              </div>
-              )
-            }
-
+          <div className="flex items-center hover:ease-linear" onClick={(e) => deleteCompletedList(e, item._id.toString())} >
+            <FaFileCircleCheck size={25} className="text-green-500 hover:scale-110 transition duration-300" />
+          </div>
 
           <div className="flex flex-col flex-1">
               <h2 className="font-bold">{item.title}</h2>
@@ -55,13 +49,16 @@ const TopicsList = ({ List }) => {
           
           <div className="flex gap-5 items-center ">
               <span className="text-sm text-slate-400 font-bold">{item.date}</span>
-            <RemoveBtn id={item._id.toString()} />
+
             {completedItems.includes(item._id.toString()) ?
               (<div></div>) :
               (
+                <>
+                 <RemoveBtn id={item._id.toString()} />
                 <Link href={`/editList/${item._id.toString()}`}>
                 <HiPencilSquare size={24}/>
                 </Link>
+                </>
               )
             }
 
