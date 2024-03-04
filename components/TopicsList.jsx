@@ -48,7 +48,7 @@ const TopicsList = ({ List }) => {
           </div>
           
           <div className="flex gap-5 items-center ">
-              <span className="text-sm text-slate-400 font-bold">{item.date}</span>
+            <span className="text-sm text-slate-400 font-bold">{item.date}</span>
 
             {completedItems.includes(item._id.toString()) ?
               (<div></div>) :
