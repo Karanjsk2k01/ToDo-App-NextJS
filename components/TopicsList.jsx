@@ -9,7 +9,7 @@ const TopicsList = ({ List }) => {
 
   const [completedItems, setCompletedItems] = useState([])    
   
-  const deleteCompletedList = async (e,id)=>
+  const deleteCompletedList = async (e,id,title,description,date)=>
   {
     e.preventDefault()
 
@@ -20,11 +20,29 @@ const TopicsList = ({ List }) => {
         if (!res.ok)
         {
           throw new Error('Failed to delete')
-      }     
-      
-      setCompletedItems([...completedItems,id])
-
-
+      }
+        else {
+          let data = {
+            title,
+            description,
+            date
+          }
+          
+          let res = await fetch('http://localhost:3000/api/completed', {
+            method: 'POST',
+            headers: {
+              'Content-type':'application/json'
+            },
+            body:JSON.stringify(data)
+          })
+          
+          if (!res.ok) {
+            throw new Error('Failed to update completed list')
+          }
+          else {
+            setCompletedItems([...completedItems,id])
+          }
+        }      
     } catch (error) {
       console.log(error)
     }
@@ -35,7 +53,12 @@ const TopicsList = ({ List }) => {
     <>
       {List.map((item) => (
         <div className="py-5 border-slate-300 shadow px-5 flex justify-between gap-5" key={item._id.toString()}>
-          <div className="flex items-center hover:ease-linear" onClick={(e) => deleteCompletedList(e, item._id.toString())} >
+          <div
+            className="flex items-center hover:ease-linear"
+            onClick={
+              (e) => deleteCompletedList(e, item._id.toString(),item.title,item.description,item.date)
+            }
+          >
             <FaFileCircleCheck size={25} className="text-green-500 hover:scale-110 transition duration-300" />
           </div>
 
@@ -48,7 +71,7 @@ const TopicsList = ({ List }) => {
           </div>
           
           <div className="flex gap-5 items-center ">
-            <span className="text-sm text-slate-400 font-bold">{item.date}</span>
+              <span className="text-sm text-slate-400 font-bold">{item.date}</span>
 
             {completedItems.includes(item._id.toString()) ?
               (<div></div>) :
@@ -59,6 +82,7 @@ const TopicsList = ({ List }) => {
                 <HiPencilSquare size={24}/>
                 </Link>
                 </>
+
               )
             }
 
